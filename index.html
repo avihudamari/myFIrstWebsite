@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title> ISR exercise </title>
+		
+		<script src="js/JQuery.js"></script>
+		
+		<link rel="stylesheet" href="css/style.css" type="text/css"/>	
+		
+		<script>		
+					var markers = [];
+					
+					function initMap(){
+						var location = {lat: 31.847038 , lng:35.143560};
+						var map = new google.maps.Map(document.getElementById("map"),{
+																		zoom: 7,
+																		center: location
+																		});
+						
+						function addMarker(props){
+							var marker = new google.maps.Marker({
+								position: props.croods,
+								map: map
+								}); 
+								
+							var contentString = "<img src='" + props.imageUrl +
+								"' class= 'cityMarkerImage'> <div class='infoMarker'><p>"
+								+ props.info + "</p></div>";
+							
+							var infoWindow = new google.maps.InfoWindow({
+							content: contentString
+							});
+							google.maps.event.addListener(marker, 'mouseover', function() {
+							infoWindow.open(map,marker);
+							});
+							google.maps.event.addListener(marker, 'mouseout', function() {
+							infoWindow.close();
+							});	
+							markers.push(marker);
+						}
+	
+	
+						function addCity(props){
+							google.maps.event.addDomListener(document.getElementById(props.name),'click',function() {
+								clearMarkers();
+								map.setZoom(13.4);
+								map.setCenter(props.centerCroods);
+								for (var i = 0; i < props.croods.length; i++)
+								{
+									addMarker({
+										croods: props.croods[i],
+										imageUrl: props.imageUrl[i],
+										info: props.info[i]
+									});
+								}
+							});
+						}
+						
+						
+						function clearMarkers() {
+							for (var i = 0; i < markers.length; i++)
+								markers[i].setMap(null);							
+							markers = [];								
+							}
+						
+						
+						addCity({
+							name: "Jerusalem",
+							centerCroods: {lat: 31.780812 , lng:35.220924} ,
+							croods: [ {lat:31.776663,lng:35.234412} ,
+									{lat: 31.773820 , lng:35.174973} ,
+									{lat: 31.766521 , lng:35.200421} ,
+									{lat: 31.777482 , lng:35.218537} ] ,
+							imageUrl: [ "images/kotel.jpg" ,
+									"images/yadVashem.jpg" ,
+									"images/haganHabotani.jpg" ,
+									"images/ganHaazmaut.jpg" ] ,
+							info: [ "<b> הכותל המערבי </b> (בקיצור: הכותל) הוא אחד מארבעת קירות התמך המקיפים את הר הבית זה כאלפיים שנה, משלהי תקופת בית שני ועד ימינו. במסורת היהודית מיוחסת לכותל המערבי קדושה יתרה, וכנראה כבר במאה ה-14 נקבע מקום תפילה בסמוך אליו, המשמש לכך עד היום." ,
+									"<b> יד ושם </b> (בשמו הרשמי המלא: יד ושם – רשות הזיכרון לשואה ולגבורה) הוא מוסד רשמי להנצחת זכר השואה בישראל הממוקם מעל הר הזיכרון בירושלים, בחלקו המערבי של הר הרצל. הוא הוכרז כמוסד רשמי של מדינת ישראל בחוק מיוחד של הכנסת." , 
+									"<b> הגן הבוטני האוניברסיטאי בירושלים </b> הוא גן בוטני אוניברסיטאי הסמוך לשכונת ניות, בחלקו הדרום מזרחי של קמפוס אדמונד ספרא (גבעת רם). הגן שייך לאוניברסיטה העברית, אולם מנוהל על ידי חברה חיצונית." , 
+									"<b> גן העצמאות </b>(בשמו הרשמי: גן הרי וילף) הוא פארק עירוני במרכז ירושלים, המשתרע בין רחוב המלך ג'ורג' במערב ורחוב גרשון אגרון וכיכר צרפת בדרום, רחוב הלל בצפון ורחוב מנשה בן ישראל ובית הקברות המוסלמי הישן במזרח."
+									]
+						});
+						
+						addCity({
+							name: "TelAviv",
+							centerCroods: {lat: 32.083303 , lng:34.778663} ,
+							croods: [ {lat: 32.072825 , lng:34.779041} ,
+									{lat: 32.070752 , lng:34.783477} ,
+									{lat: 32.057262, lng: 34.767713} ,
+									{lat: 32.080260 , lng:34.790184} ] ,
+							imageUrl: [ "images/habima.jpg" ,
+									"images/senimatek.jpg" ,
+									"images/florentin.jpg" ,
+									"images/icilov.jpg" ] ,
+							info: [ "<b>תיאטרון הבימה </b> (נוסד ב-1917) הוא התיאטרון הלאומי של ישראל, זוכה פרס ישראל לשנת 1958 וחבר באיחוד תיאטרוני אירופה. מנכל התיאטרון הוא נעם סמל, המנהל האמנותי של התיאטרון הוא משה קפטן." ,
+									"<b>סינמטק תל אביב </b> הוא סינמטק (ארכיון סרטים) הפועל בתל אביב החל מ1973. את הסינמטק יזם והקים אליהו שפייזר, בעת שכיהן כסגן ראש עיריית תל אביב וראש אגף התרבות." , 
+									"<b>פלורנטין </b>היא שכונה בדרום תל אביב, הסמוכה לגבול עם יפו, אשר נקראת על שמו של שלמה פלורנטין. השכונה ממוקמת בין הרחובות העלייה במזרח, אליפלט במערב, דרך יפו מצפון ודרך שלמה (סלמה) מדרום.", 
+									"<b>בית החולים איכילוב </b>, הוא אחד משלושת בתי החולים הגדולים בישראל. בנוסף להיותו בית חולים, הוא משמש מרכז הוראה ומחקר המסונף לפקולטה לרפואה על שם סאקלר באוניברסיטת תל אביב ובית הספר לסיעוד על שם שיינבורן."
+									]
+						});
+						
+						
+						addCity({
+							name: "Haifa",
+							centerCroods: {lat: 32.806102 , lng:34.993582} ,
+							croods: [ {lat: 32.778481 , lng:35.023236} ,
+									{lat: 32.811904 , lng:34.985068} ,
+									{lat: 32.783548 , lng:34.965287} ,
+									{lat: 32.812072 , lng:35.040617} ] ,
+							imageUrl: [ "images/hatecnion.jpg" ,
+									"images/haganimHabahaim.jpg" ,
+									"images/samiOffer.jpg" ,
+									"images/namalTeufa.jpg" ] ,
+							info: [ "<b>הטכניון </b>הוא אוניברסיטת מחקר בחיפה המתמקדת בהנדסה ובמדעים מדויקים ומלמדת גם רפואה ואדריכלות. הטכניון הוא המוסד הוותיק בתחום המחקר הטכנולוגי בישראל ונחשב למוביל בתחום זה. הטכניון הוא אחת מהאוניברסיטאות הראשונות בישראל." ,
+									"<b>הגנים הבהאים בחיפה </b>בנויים מתשעה עשר גנים מדורגים (טרסות) המתחילים בראש הר הכרמל ומסתיימים למרגלותיו. הציר המרכזי שסביבו תוכננו הגנים מורה לכיוון עכו, עיר בעלת משמעות היסטורית ודתית רבה עבור הבהאים. בלב הגנים ניצב מקדש הבאב בעל כיפת הזהב," , 
+									"<b>אצטדיון סמי עופר </b> הוא אצטדיון כדורגל הממוקם בחיפה. האצטדיון, משמש כמגרשן הביתי של קבוצות מכבי חיפה והפועל חיפה. האצטדיון נקרא על שם איש העסקים סמי עופר. האצטדיון נחשב לאצטדיון המודרני ביותר בישראל." , 
+									"<b>נמל התעופה חיפה </b> הוא נמל תעופה השוכן בכניסה המזרחית לעיר חיפה, סמוך לנמל הקישון. הנמל משרת את התעופה האזרחית, ומשמש גם כבסיס צבאי של חיל האוויר הישראלי .שימש גם את התעופה הצבאית, אך זו הופסקה ממנו לחלוטין."
+									]
+						});
+						
+						addCity({
+							name: "Eilat",
+							centerCroods: {lat: 29.544574 , lng: 34.942737} ,
+							croods: [ {lat: 29.547803 , lng:34.964433} ,
+									{lat: 29.504060 , lng:34.919135} ,
+									{lat: 29.526922 , lng:34.935854} ,
+									{lat: 29.554350 , lng:34.940529} ] ,
+							imageUrl: [ "images/mifrazEilat.jpg" ,
+									"images/hamizpeHatatYami.jpg" ,
+									"images/rifHadolfinim.jpg" ,
+									"images/yoseftal.jpg" ] ,
+							info: [ "<b>מפרץ אילת </b>, הידוע מחוץ לישראל כמפרץ עקבה, הוא לשון ים ארוכה וצרה, שלוחה צפונית של הים האדום המפרידה בין חצי האי סיני ובין חצי האי ערב. מבחינה גאולוגית, מפרץ אילת מהווה חלק מהבקע הסורי-אפריקני ומכאן עומקו הרב." ,
+									"<b>המצפה התת-ימי באילת </b> הוא אקווריום הנמצא מדרום לאילת, בחוף שמורת חוף האלמוגים, ובו מצפה תת-ימי הראשון מסוגו בעולם ממנו ניתן לצפות בבעלי חיים ימיים שונים וכן ניתן לעלות למגדל התצפית במצפה ולצפות בנוף השמורה." , 
+									"<b>ריף הדולפינים</b> הוא אתר תיירות שהוקם לחופה הדרומי של אילת, סביב שונית בצורת פרסה, ומעניק חוויית שחייה וצלילה עם דולפינים, וכן גם עם שאר בעלי החיים בריף. מיני בעלי חיים רבים מצויים באזור, בניהם; פרפרוניים, קיסריים ודיונונאים." , 
+									"<b>המרכז הרפואי יוספטל </b>הוא בית חולים הממוקם בעיר אילת. נקרא על שם השר גיורא יוספטל. המרכז הרפואי שייך לשירותי בריאות כללית ומטפל בתושבי האזור וגם במיליוני התיירים הפוקדים את אילת וסביבתה לכל אורך השנה. "
+									]
+						});
+																		
+				}
+		</script>
+			
+		<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDNT76MY7BNTounh9OKLofJftUWz63DAKA&callback=initMap" type="text/javascript">
+		</script>
+	
+	</head>
+	
+	<body>
+	
+		<div id="map"></div>						
+		<div id="listDiv">
+			<ul>
+					<a href="#"> <li id= "Jerusalem">
+						<div>
+							<img src="images/jerusalemSymbol.jpg" class="cityImage">
+						</div>
+						<div class="textCity">
+							<h3>ירושלים</h3>
+							<p>
+								ירושלים היא עיר הבירה של ישראל והעיר עם האוכלוסייה הגדולה ביותר בה.
+							</p>
+						</div> 
+					</li> </a> 					
+				
+					<a href="#"> <li id= "TelAviv">
+						<div>
+							<img src="images/telAvivSymbol.jpg" class="cityImage">
+						</div>
+						<div class="textCity">
+							<h3>תל אביב</h3>
+							<p>
+								תל אביב, היא עיר במישור החוף הדרומי, המרכזית מבין ערי גוש דן והשנייה בגודל אוכלוסייתה בישראל.
+							</p>
+						</div>
+					</li> </a>				
+				
+					<a href="#"> <li id= "Haifa">
+						<div>
+							<img src="images/haifaSymbol.jpg" class="cityImage">
+						</div>
+						<div class="textCity">
+							<h3>חיפה</h3>		
+							<p>
+								חיפה היא העיר השלישית בגודל אוכלוסייתה בישראל, בעלת אוכלוסייה מעורבת יהודית-ערבית.				
+							</p>
+						</div>
+					</li>  </a>		 
+					
+					<a href="#"> <li id="Eilat">
+						<div>
+							<img src="images/eilatSymbol.jpg" class="cityImage">
+						</div>
+						<div class="textCity">
+							<h3>אילת</h3>			
+							<p>
+								אילת היא העיר הדרומית ביותר במדינת ישראל והיחידה בה לחופי הים האדום, והיא משמשת כעיר נמל ותיירות מרכזית.		
+							</p>
+						</div>
+					</li> </a>	
+				
+			</ul>
+		</div>
+	</body>
+</html>
